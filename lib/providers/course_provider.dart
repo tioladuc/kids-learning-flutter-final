@@ -1,3 +1,5 @@
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import '../core/api_client.dart';
 import '../models/course.dart';
 import 'session_base.dart';
@@ -126,9 +128,32 @@ class CourseProvider extends SessionBase {
     }
   }
 
+  Future<bool> makePaymentStripe(int amount) async {
+  try {
+    print('the payment final WWWWW = ' + amount.toString());
+    final clientSecret = await ApiClient.createPaymentIntent(amount); // $10
+    print('the payment final PPPP');
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'Kids Learning App',
+      ),
+    );
+    print('the payment final XXXX');
+    await Stripe.instance.presentPaymentSheet();
+
+    print("✅ Payment successful");
+    return true;
+  } catch (e) {
+    print("❌ Payment failed: $e");
+    return false;
+  }
+}
+
   Future<bool> payCourse({
     required String childId,
     required String courseCode,
+    required double amount,
   }) async {
     isLoadingPayCourse = true;
     errorMessage = null;
@@ -136,17 +161,29 @@ class CourseProvider extends SessionBase {
 
     bool statusResponse = false;
     try {
+
+      print({
+        "child_id": childId,
+        "course_code": courseCode,
+        "amount": amount,
+      });
+      print('payment begining');
       final response = await ApiClient.post('/course/payCourse', {
         "child_id": childId,
         "course_code": courseCode,
+        "amount": amount,
       });
       //Map<String, dynamic> response = {'success': true,};
 
+      print('Before payment 01');
+      print(response);
       // ✅ Example: handle response
       if (response['success'] == true) {
+        print('Before payment 02');
         statusResponse = true;
         loadChildAvailableCourses(childId);
       } else {
+        print('Before payment 03 FAIL');
         errorMessage = SessionBase.translator.getText('PayCourseError');
         statusResponse = false;
       }

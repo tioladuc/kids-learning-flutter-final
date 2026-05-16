@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/core/notify_data.dart';
 import 'package:provider/provider.dart';
@@ -123,7 +126,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
                 _formatDate(course.expiryDate!),
                 highlight: isExpiringSoon,
               ),
-            if (widget.isResponsible)
+            if (true)//(widget.isResponsible)
               _paymentButton(course, provider, notifyData),
             _removeCourseButton(course, provider, notifyData),
           ],
@@ -206,22 +209,43 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     final confirm = await _showConfirmationDialog(course, notifyData);
 
     if (confirm != true) return;
-
-    final success = await provider.payCourse(
-      childId: widget.child.id,
-      courseCode: course.code,
-    );
-
-    if (!mounted) return;
-
-    if (success) {
-      _showSuccessDialog(notifyData);
-    } else {
-      _showError(
-        provider.errorMessage ??
-            translator.getText('PendingCoursePaymentFailed'),
+    if (!kIsWeb) { // if it is not web version
+      print('before X 01');
+      bool success = await provider.makePaymentStripe(
+        (course.amount * 100).toInt(),
       );
+      print('before X 02');
+      if (success) {
+        print('before X 03');
+        success = await provider.payCourse(
+          childId: widget.child.id,
+          courseCode: course.code,
+          amount: course.amount
+        );
+        print('before X 04');
+      }
+
+      print('before X 05');
+      if (!mounted) return;
+
+      print('before X 06');
+      if (success) {
+        print('before X 07');
+        _showSuccessDialog(notifyData);
+        setState(() {
+          provider.pendingCourses.remove(course);
+        });
+        print('before X 08');
+      } else {
+        print('before X 09');
+        _showError(
+          provider.errorMessage ??
+              translator.getText('PendingCoursePaymentFailed'),
+        );
+        print('before X 10');
+      }
     }
+    
   }
 
   Future<void> _handleRemoveCourse(

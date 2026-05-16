@@ -47,6 +47,7 @@ dependencies:
   audio_waveforms: ^1.0.4
   flutter_sound: ^9.2.13 
   just_audio: ^0.9.38
+  flutter_stripe: ^12.4.0
 
 flutter_launcher_icons:
   android: true

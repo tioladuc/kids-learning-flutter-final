@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:kids_learning_flutter_app/providers/course_provider.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
 import '../core/api_client.dart';
 import '../core/notify_data.dart';
 import '../models/child.dart';
@@ -36,6 +36,8 @@ class SessionProvider extends SessionBase {
   bool isLoginLoading = false;
 
   SessionProvider() {}
+
+  
 
   void setCurrentChildAsParent(Child? child) {
     parent!.currentChild = child;
@@ -707,13 +709,24 @@ class SessionProvider extends SessionBase {
 
     bool statusResponse = false;
     try {
+      print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
       final response = await ApiClient.post('/account/loadPayment', {
-        "parentid": parent!.id,
+        "parent_id": parent!.id,
       });
+      print('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF');
       //Map<String, dynamic> response = {'success': true,};
-
+      print(response);
+      print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
       // ✅ Example: handle response
       if (response['success'] == true) {
+        // Amount possitive is for pay transactions and negative one is to be expected
+        print('DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD');
+        List<PaymentModel> data = (response["data"] as List<dynamic>)
+            .map((e) => PaymentModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+        print('ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz');
+        paidPayments = data.where((x)=>x.amount >= 0).toList();
+        upcomingPayments = data.where((x)=>x.amount < 0).toList();
         statusResponse = true;
       } else {
         errorMessage = SessionBase.translator.getText('LoadPaymentError');

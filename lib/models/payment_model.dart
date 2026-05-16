@@ -14,12 +14,13 @@ class PaymentModel {
   });
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
+
     return PaymentModel(
-      amount: (json['amount'] ?? 0).toDouble(),
+      amount: double.parse(json['amount'].toString()),//12, //(json['amount'] ?? 0).toDouble(),
       courseName: json['courseName'] ?? '',
       childName: json['childName'] ?? '',
-      date: DateTime.parse(json['date']),
-      isPaid: json['isPaid'] ?? false,
+      date: DateTime.parse(json['date'].toString().replaceFirst(' ', 'T')),//DateTime.now(),//parse(json['date'].toString().replaceFirst(' ', 'T')),//parse(json['date'].toString().replaceFirst(' ', 'T')),
+      isPaid: json['isPaid'] == 1 || json['isPaid'] == true,
     );
   }
 }

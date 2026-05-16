@@ -7,14 +7,24 @@ import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 class ApiClient {
   static const baseUrl = 'http://yehoshoualevivant.com/learn4kids';
 
-  static Future<dynamic> getBetta() async {
-    final res = await http.get(
-      Uri.parse('http://yehoshoualevivant.com/learn4kids/top.php'),
-    );
-    final data = jsonDecode(res.body);
-    print(data);
-    return jsonDecode(res.body);
-  }
+  static Future<String> createPaymentIntent(int amount) async {
+
+    print('CreatePaymentIntent 011111111111');
+    print("${baseUrl}/create_payment_intent.php");
+    print(jsonEncode({'amount': amount}));
+    final response = await http.post(
+    Uri.parse("${baseUrl}/create_payment_intent.php"),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'amount': amount}),
+  );
+
+    print('CreatePaymentIntent 022222222222');
+    print(response);
+    print('CreatePaymentIntent 0333333333333');
+    print(jsonDecode(response.body));
+  final data = jsonDecode(response.body);
+  return data['clientSecret'];
+}
 
   static Future<dynamic> get(String path) async {
     final res = await http.get(Uri.parse('$baseUrl$path'));
@@ -72,6 +82,7 @@ class ApiClient {
           if (token != '') "Authorization": "Bearer $token",
         };
       print(top);*/
+      print(jsonEncode(body));
       final res = await http.post(
         Uri.parse('$baseUrl$path'),
         headers: {
@@ -86,7 +97,9 @@ class ApiClient {
       print('');
       print('====================================================');*/
       //print(SessionProvider.token);
+      print('999999999999999999999999999999999999999999999999999999999999999');
       print(res.body);
+      print('888888888888888888888888888888888888888888888888888888888888888');
       return jsonDecode(res.body);
     } catch (e) {
       print(e);
