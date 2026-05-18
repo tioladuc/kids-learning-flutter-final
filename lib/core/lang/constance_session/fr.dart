@@ -12,6 +12,7 @@ class Fr {
   "ResetParentAccount": "ReInitialiser Compte Parent",
 
   "LoginText": "Login",
+  "CodeParent": "Code Parent",
   "PasswordText": "Mot de passe",
   "LoginButton": "Se Loguer",
   "LogoutButton": "Se Déconnecter",

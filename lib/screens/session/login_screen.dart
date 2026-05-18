@@ -20,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   final controllerLogin = TextEditingController();
+  final controllerCode = TextEditingController();
   final controllerPwd = TextEditingController();
   SessionProvider session = SessionProvider();
   Translator translator = Translator();
@@ -31,6 +32,8 @@ class _LoginScreen extends State<LoginScreen> {
       selectedProfile = choice;
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,33 @@ class _LoginScreen extends State<LoginScreen> {
                     : Constant.getTitle1ButtonStyleBlack(),
                 child: Text(translator.getText('LoginAsParent')),
               ),
+            /*if (selectedProfile == '' ||
+                selectedProfile == NotifyData.ChoiceParent)
+              const SizedBox(height: 24),
+            if (selectedProfile == NotifyData.ChoiceParent ||
+                selectedProfile == NotifyData.ChoiceChild)
+              TextField(
+                controller: controllerLogin,
+                decoration: InputDecoration(
+                  labelText: translator.getText('LoginText'),
+                ),
+              ),*/
+
+
+
             if (selectedProfile == '' ||
+                selectedProfile == NotifyData.ChoiceParent)
+              const SizedBox(height: 24),
+            if (selectedProfile == NotifyData.ChoiceParent ||
+                selectedProfile == NotifyData.ChoiceChild)
+              TextField(
+                controller: controllerCode,
+                decoration: InputDecoration(
+                  labelText: translator.getText('CodeParent'),
+                ),
+              ),
+
+              if (selectedProfile == '' ||
                 selectedProfile == NotifyData.ChoiceParent)
               const SizedBox(height: 24),
             if (selectedProfile == NotifyData.ChoiceParent ||
@@ -85,6 +114,12 @@ class _LoginScreen extends State<LoginScreen> {
                   labelText: translator.getText('LoginText'),
                 ),
               ),
+
+
+
+
+
+
             if (selectedProfile == NotifyData.ChoiceParent ||
                 selectedProfile == NotifyData.ChoiceChild)
               const SizedBox(height: 24),
@@ -92,6 +127,7 @@ class _LoginScreen extends State<LoginScreen> {
                 selectedProfile == NotifyData.ChoiceChild)
               TextField(
                 controller: controllerPwd,
+                obscureText: true,
                 decoration: InputDecoration(
                   labelText: translator.getText('PasswordText'),
                 ),
@@ -108,6 +144,7 @@ class _LoginScreen extends State<LoginScreen> {
                     selectedProfile,
                     controllerLogin.text,
                     controllerPwd.text,
+                    controllerCode.text
                   );
 
                   if (success) {

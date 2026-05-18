@@ -159,7 +159,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
             // Actions
             Center(
               child: ElevatedButton.icon(
-                onPressed: () => _showAddChildDialog(context, notifyData),
+                onPressed: () {_showAddChildDialog(context, notifyData); setState(() {});},
                 icon: const Icon(Icons.person_add),
                 label: Text(translator.getText('menuAddChild')),
                 style: Constant.getTitle3ButtonStyle(),
@@ -188,6 +188,9 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
     final controllerLogin = TextEditingController();
     final controllerPassword = TextEditingController();
     final controllerName = TextEditingController();
+    final levelController = TextEditingController();
+    final Map<String, String> levels = SessionProvider.GetLevel();
+    String currentLevel = '';
 
     showDialog(
       context: context,
@@ -195,6 +198,25 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
         title: Text(translator.getText('titleAddChild')),
         content: Column(
           children: [
+          DropdownMenu<String>(
+          controller: levelController,
+          requestFocusOnTap: false,
+          enableFilter: false,
+          keyboardType: TextInputType.none,
+          width: 250,
+          label: Text(translator.getText('labelChildLevel')),
+          dropdownMenuEntries: levels.entries.map((entry) {
+            return DropdownMenuEntry<String>(
+              value: entry.key,
+              label: entry.value,
+            );
+          }).toList(),
+          onSelected: (value) {
+            print("Selected: $value");
+            currentLevel = value!;
+          },
+        ),
+        SizedBox(height: 10),
             TextField(
               controller: controllerName,
               decoration: InputDecoration(
@@ -231,6 +253,7 @@ class _MainIntroScreenParent extends State<MainIntroScreenParent> {
                   controllerLogin.text,
                   controllerName.text,
                   controllerPassword.text,
+                  currentLevel
                 );
                 Navigator.pop(context);
               }

@@ -34,10 +34,29 @@ class SessionProvider extends SessionBase {
   bool isActivationCodeSending = false;
   String? errorMessage;
   bool isLoginLoading = false;
+  static Map<String, String> levels = {};
 
   SessionProvider() {}
 
-  
+  static Future<Map<String, String>> getLevelsFuture() async{
+    final response = await ApiClient.post('/account/levels', {
+        
+
+      });
+      final decoded = response;
+      Map<String, String> data = {};
+      for (var item in decoded['data']) {
+        data[ item['code'].toString() ] = item['libelle'].toString();
+      }
+        //data.keys. .addEntries(newEntries)  item['code'].toString(): item['libelle'].toString()
+      levels = data;
+      return data;
+  }
+
+  static Map<String, String> GetLevel() {
+    if(levels.isEmpty) getLevelsFuture();
+    return levels;
+  }
 
   void setCurrentChildAsParent(Child? child) {
     parent!.currentChild = child;
@@ -94,17 +113,19 @@ class SessionProvider extends SessionBase {
     }
   }
 
-  Future<bool> login(String selectedRole, String login, String pwd) async {
+  Future<bool> login(String selectedRole, String login, String pwd, String codeParent) async {
     isLoginLoading = true;
     errorMessage = null;
     notifyListeners();
 
     bool statusResponse = false;
+    
     try {
       final response = await ApiClient.post('/account/login', {
         "role": selectedRole,
         "login": login,
         "password": pwd,
+        "codeparent": codeParent,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -136,6 +157,7 @@ class SessionProvider extends SessionBase {
     } finally {
       isLoginLoading = false;
       notifyListeners();
+      GetLevel();
       return statusResponse;
     }
   }
@@ -150,15 +172,18 @@ class SessionProvider extends SessionBase {
     List<Child> childrenList = [];
 
     for (var childJson in result["children"]) {
-      childrenList.add(
-        Child(
+      final myChild = Child(
           id: childJson["id"],
           name: childJson["name"],
           login: childJson["login"],
           password: childJson["passwordraw"], 
-          passwordraw: childJson["passwordraw"],// password not returned from API
-        )..parentResponsible = childJson["parent_responsible"] == 1,
-      );
+          passwordraw: childJson["passwordraw"],
+          level: childJson["level"]??'',
+          codeparent: childJson["codeparent"]??'',// password not returned from API
+        );
+        myChild.parentResponsible = childJson["parent_responsible"] == 1;
+        myChild.codeSecret = childJson["codesecret"]??'';
+      childrenList.add(myChild);
     }
 
     // ==========================
@@ -172,9 +197,12 @@ class SessionProvider extends SessionBase {
       name: "${parentJson["first_name"]} ${parentJson["last_name"]}",
       login: parentJson["login"],
       password: "", 
-      passwordraw: '',// not returned from API
+      passwordraw: '',
+      level:parentJson["level"]??'',
+      codeparent: parentJson["codeparent"]??'', // not returned from API
       children: childrenList,
     );
+    parent.codeSecret = parentJson["codeparent"]??'';
 
     // Extra fields
     parent.firstName = parentJson["first_name"];
@@ -200,8 +228,11 @@ class SessionProvider extends SessionBase {
       name: childJson["name"],
       login: childJson["login"],
       passwordraw: childJson["passwordraw"] ?? '',
-      password: childJson["passwordraw"] ?? '', // not returned from API
+      password: childJson["passwordraw"] ?? '',
+      level: childJson["level"] ?? '',
+      codeparent: childJson["codeparent"] ?? '', // not returned from API
     );
+    child.codeSecret = childJson["codesecret"]??'';
 
     // set optional values
     child.parentResponsible = childJson["parent_responsible"] == 1;
@@ -211,7 +242,7 @@ class SessionProvider extends SessionBase {
     SessionProvider.token = token;
   }
 
-  Future<bool> addChild(String login, String name, String pwd) async {
+  Future<bool> addChild(String login, String name, String pwd, String level) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -223,21 +254,26 @@ class SessionProvider extends SessionBase {
         "login": login,
         "password": pwd,
         "parent_id": parent!.id,
+        "codeparent": parent!.codeparent,
+        "level": level,
+
       });
       //Map<String, dynamic> response = {'success': true,};
 
       // ✅ Example: handle response
       if (response['success'] == true) {
-        statusResponse = true;
-        parent?.children.add(
-          Child(
-            id: DateTime.now().toString(),
+        statusResponse = true;//parentResponsible
+        Child child = Child(
+            id: response['data']['id'] ?? DateTime.now().toString(),
             name: name,
             login: login,
             password: pwd,
             passwordraw: pwd,
-          ),
-        );
+            level: level,
+            codeparent: parent!.codeparent
+          );
+          child.parentResponsible = true;
+        parent?.children.add(child);
       } else {
         errorMessage = SessionBase.translator.getText('AddChildToParentError');
         statusResponse = false;
@@ -361,6 +397,8 @@ class SessionProvider extends SessionBase {
   Future<bool> changePasswordParentChild(
     String name,
     String newPassword,
+    String level,
+    String login,
     Child child,
   ) async {
     isLoading = true;
@@ -375,6 +413,9 @@ class SessionProvider extends SessionBase {
             "new_password": newPassword,
             "child_id": child.id,
             "parent_id": parent!.id,
+            "level": level,
+            "login": login,
+            "codeparent": child.codeparent,
           });
       //Map<String, dynamic> response = {'success': true,};
 

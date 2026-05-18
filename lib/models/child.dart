@@ -2,6 +2,8 @@ class Child {
   final String id;
   String name;
   final String login;
+  String level;
+  String codeparent;
   String password;
   String passwordraw;
 
@@ -11,6 +13,7 @@ class Child {
   int? streakDays;
   int? age;
 
+  String? codeSecret;
   bool? parentResponsible = false;
 
   Child({
@@ -19,7 +22,10 @@ class Child {
     required this.login,
     required this.password,
     required this.passwordraw,
+    required this.level,
+    required this.codeparent,
     this.parentResponsible,
+    
   });
 
   factory Child.fromJson(Map<String, dynamic> json) {
@@ -29,6 +35,8 @@ class Child {
       login: json["login"],
       password: json["password"],
       passwordraw: json["passwordraw"],
+      level: '',//json["level"]??'',
+      codeparent: '',//json["codeparent"]??'',
       parentResponsible: json["parent_responsible"] == 1,
     );
   }
@@ -41,6 +49,9 @@ class Child {
       password: child.password,
       passwordraw: child.passwordraw,
       parentResponsible: child.parentResponsible,
+
+      level: child.level,
+      codeparent: child.codeparent,
     );
   }
 }

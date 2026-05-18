@@ -6,6 +6,8 @@ class Course {
   final String validity; // "1 month", "1 year", "1 term"
   final bool isRegistered;
   final String description;
+  String? url;
+  String? level;
 
   Course({
     required this.code,
@@ -18,15 +20,19 @@ class Course {
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
-    return Course(
+    Course course = Course(
       code: json["code"],
       name: json["name"],
       amount: double.parse(json["amount"].toString()),
       validity: json["validity"],
       description: json["description"],
+      
       expiryDate: null,
       isRegistered: false,
     );
+    course.url = json["url"]??'';
+    course.level = json["level"] ?? '';
+    return course;
   }
   
 }

@@ -22,8 +22,11 @@ class ParentChildScreen extends StatefulWidget {
 
 class _ParentChildScreenState extends State<ParentChildScreen> {
   late TextEditingController _nameController;
+  late TextEditingController _loginController;
+  TextEditingController _levelController = TextEditingController();
   late TextEditingController _passwordController;
   Translator translator = Translator();
+  final Map<String, String> levels = SessionProvider.GetLevel();
 
   late Child _editableChild;
 
@@ -33,15 +36,23 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
     // Create a copy to avoid modifying original directly
     _editableChild = Child.copy(widget.child);
-    print('***********************=='+ _editableChild.password +'==**********************');
+    print('***********************=='+ _editableChild.password +'==***111111*******************');
     _nameController = TextEditingController(text: _editableChild.name);
+    print('***********************=='+ _editableChild.password +'==***2222222*******************');
     _passwordController = TextEditingController(text: _editableChild.password);
+    print('***********************=='+ _editableChild.password +'==***33333333*******************');
+    _levelController = TextEditingController( text: _editableChild.level );
+    print('***********************=='+ _editableChild.password +'==****4444444******************');
+    _loginController = TextEditingController(text: _editableChild.login);
+    print('***********************=='+ _editableChild.password +'==**5555555********************');
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _passwordController.dispose();
+    _loginController.dispose();
+    _levelController.dispose();
     super.dispose();
   }
 
@@ -59,7 +70,11 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
       session.changePasswordParentChild(
         _nameController.text,
         _passwordController.text,
-        widget.child,
+        _levelController.text,
+        _loginController.text,
+        widget.child
+        
+
       );
     });
     Navigator.pushAndRemoveUntil(
@@ -175,12 +190,24 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
+    String currentLevel = widget.child.level;
+    print('tttttttttttttttttttttttttttttttttttt');
+    print(session);
+    print(widget.child.parentResponsible!);
+    print('tttttttttttttttttttttttttttttttttttt');
     translator = Translator(
       status: StatusLangue.CONSTANCE_PARENT,
       lang: notifyData.currentLanguage,
     );
+    print('7777777777777777777777777777777777777777777777777');
+    _levelController.text = SessionProvider.GetLevel()[widget.child.level]! ;
+    print('55555555555555555555555555555555555555555');
+    print(widget.child.id);
+    print(SessionProvider.parent!.codeparent);
+    print('55555555555555555555555555555555555555555');
 
     return AppScaffold(
       body: SingleChildScrollView(
@@ -208,9 +235,37 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     const SizedBox(height: 10),
 
                     Text(
+                      translator.getText('labelChildParentCode') +
+                          ": ${SessionProvider.parent!.codeparent}",
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                    const SizedBox(height: 10),
+
+                    Text(
                       translator.getText('labelChildId') +
                           ": ${widget.child.id}",
                       style: const TextStyle(color: Colors.grey),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    DropdownMenu<String>(
+                      controller: _levelController,
+                      requestFocusOnTap: false,
+                      enableFilter: false,
+                      keyboardType: TextInputType.none,
+                      width: 250,
+                      label: Text(translator.getText('labelChildLevel')),
+                      dropdownMenuEntries: levels.entries.map((entry) {
+                        return DropdownMenuEntry<String>(
+                          value: entry.key,
+                          label: entry.value,
+                        );
+                      }).toList(),
+                      onSelected: (value) {
+                        print("Selected: $value");
+                        currentLevel = value!;
+                      },
                     ),
 
                     const SizedBox(height: 20),
@@ -219,7 +274,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: translator.getText('labelChildNameDetailEN'),
+                        labelText: translator.getText('labelChildNameDetail'),
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -228,10 +283,8 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
 
                     // Login (readonly)
                     TextField(
-                      controller: TextEditingController(
-                        text: widget.child.login,
-                      ),
-                      readOnly: true,
+                      controller: _loginController,
+                      readOnly: false,
                       decoration: InputDecoration(
                         labelText: translator.getText('labelChildLoginDetail'),
                         border: OutlineInputBorder(),
@@ -275,6 +328,9 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
             // -------------------------
             // ACTIONS
             // -------------------------
+            //=================================================================
+            //=================================================================
+            //=================================================================
             Card(
               child: Column(
                 children: [
@@ -348,6 +404,10 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                 ],
               ),
             ),
+          
+          //=================================================================
+            //=================================================================
+            //=================================================================
           ],
         ),
       ),

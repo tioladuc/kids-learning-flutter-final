@@ -6,10 +6,11 @@ class En {
       "No children have been registered yet. Please register your children on the platform to access our tools.",
 
   "menuAddChild": "Add Child",
-  "menuChangeNameAndPwd": "Update Info",
+  "menuChangeNameAndPwd": "Update My Information",
 
   "titleAddChild": "Register a child",
 
+  "labelChildLevel": "Child Class/Level",
   "labelChildName": "Child Name",
   "labelChildLogin": "Child Login",
   "labelChildPwd": "Child Password",
@@ -37,6 +38,7 @@ class En {
 
   "labelTitleChildIdDetail": "Child Details",
   "labelChildId": "Child ID",
+  "labelChildParentCode": "Child Parent Code",
   "labelChildNameDetail": "Child Name",
   "labelChildLoginDetail": "Child Login",
   "labelChildPasswordDetail": "Child Password",

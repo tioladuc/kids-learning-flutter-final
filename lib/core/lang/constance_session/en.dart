@@ -12,6 +12,7 @@ class En {
   "ResetParentAccount": "Reset Parent Account",
 
   "LoginText": "Login",
+  "CodeParent": "Parent Code",
   "PasswordText": "Password",
   "LoginButton": "Login",
   "LogoutButton": "Logout",

@@ -9,6 +9,7 @@ import '../../core/notify_data.dart';
 import '../../models/course.dart';
 import '../../widgets/app_scaffold.dart';
 import '../audio/audio_list_screen.dart';
+import 'child/application_view_html.dart';
 import 'logout_screen.dart';
 import 'child/child_pending_screen.dart';
 import 'child/child_pick_course.dart';
@@ -28,7 +29,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
   CourseProvider courseProvider = CourseProvider();
   bool isLoadingAvailable = false;
 
-  List<Map<String, dynamic>> produceMenuItems(
+  List<Map<String, dynamic>> produceMenuItemsFromCoursesNotUrlAndStaticMenus(
     String langue,
     SessionProvider session,
   ) {
@@ -41,39 +42,82 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     }
 
     return [
+      //all url menu
+      for(var item in courses.where((x)=>x.url !=null && x.url!=''))
+        {
+          "title": item.name,
+          "icon": Icons.mic,
+          "key": item.code,
+
+          "url": item.url,
+          "description": item.description,
+          "amount": item.amount,
+          "level": item.level,
+
+        },
+      //Menu for dictation
       if (courses.any((elt) => elt.code == 'C000'))
         {
           "title": translator.getText('menuDictation'),
           "icon": Icons.mic,
           "key": 'C000',
+
+          "url": Null,
+          "description": Null,
+          "amount": Null,
+          "level": Null,
+
         },
+        //Menus for statics operations
       {
         "title": translator.getText('menuPickCourse'),
         "icon": Icons.menu_book,
         "key": 'PickACourse',
+
+          "url": Null,
+          "description": Null,
+          "amount": Null,
+          "level": Null,
       },
       {
         "title": translator.getText('menuCoursesValidationPending'),
         "icon": Icons.hourglass_top,
         "key": 'CourseValidationPending',
+
+          "url": Null,
+          "description": Null,
+          "amount": Null,
+          "level": Null,
       },
       {
         "title": translator.getText('menuStatistics'),
         "icon": Icons.bar_chart,
         "key": 'Statistics',
+
+          "url": Null,
+          "description": Null,
+          "amount": Null,
+          "level": Null,
       },
       {"title": logoutDisplay, "icon": Icons.logout, "key": 'Logout'},
     ];
   }
 
-  void _navigateTo(Map<String, dynamic> item, SessionProvider session) {
+  void _navigateToFromCoursesNotUrlAndStaticMenus(Map<String, dynamic> item, SessionProvider session) {
+    if (item['url'] != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ApplicationViewHtml(url:item['url'])),
+      );
+    }
+    //Custom navigation for dictation
     if (item['key'] == 'C000') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const AudioListScreen()),
       );
     }
-
+    //Navigation for specific courses
     if (item['key'] == 'PickACourse') {
       Navigator.push(
         context,
@@ -144,7 +188,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     );
 
     courses = courseProvider.availableCourses;
-    menuItems = produceMenuItems(notifyData.currentLanguage, session);
+    menuItems = produceMenuItemsFromCoursesNotUrlAndStaticMenus(notifyData.currentLanguage, session);
 
     return AppScaffold(
       body: courseProvider.isLoadingAvailable
@@ -163,7 +207,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
         final item = menuItems[index];
 
         return GestureDetector(
-          onTap: () => _navigateTo(item, session),
+          onTap: () => _navigateToFromCoursesNotUrlAndStaticMenus(item, session),
           child: Container(
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),

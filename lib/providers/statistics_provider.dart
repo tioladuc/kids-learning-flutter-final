@@ -57,7 +57,7 @@ class StatisticsProvider extends SessionBase {
     errorMessage = null;
     notifyListeners();
 
-    Child statusResponse = Child(id: '', login: '', name: '', password: '', passwordraw: '');
+    Child statusResponse = Child(id: '', login: '', name: '', password: '', passwordraw: '', level:'', codeparent: '');
     try {
       final response = await ApiClient.post('/statistics/loadVisitedCourses', {
         "child_id": child.id,
@@ -162,7 +162,7 @@ class StatisticsProvider extends SessionBase {
     errorMessage = null;
     notifyListeners();
 
-    Child statusResponse = Child(id: '', login: '', name: '', password: '', passwordraw: '');
+    Child statusResponse = Child(id: '', login: '', name: '', password: '', passwordraw: '', level:'', codeparent: '');
     try {
       final response = await ApiClient.post('/statistics/getBasicInformation', {
         "childid": child.id,

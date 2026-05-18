@@ -6,10 +6,11 @@ class Fr {
       "Aucun Enfant enregistré !... Enregistrez vos enfants sur la plateforme pour profiter de nos outils",
 
   "menuAddChild": "Ajouter Enfant",
-  "menuChangeNameAndPwd": "Changer Info",
+  "menuChangeNameAndPwd": "Changer Mes Infos",
 
   "titleAddChild": "Enregistrer un enfant",
 
+  "labelChildLevel": "Classe/Niveau Enfant",
   "labelChildName": "Nom Enfant",
   "labelChildLogin": "Login Enfant",
   "labelChildPwd": "Mot de passe",
@@ -36,6 +37,7 @@ class Fr {
   "childParentWorkAsChild": "Nous sommes passés en mode enfant",
 
   "labelTitleChildIdDetail": "Details Enfant",
+  "labelChildParentCode": "Code Parent",
   "labelChildId": "ID Enfant",
   "labelChildNameDetail": "Name Enfant",
   "labelChildLoginDetail": "Login Enfant",
