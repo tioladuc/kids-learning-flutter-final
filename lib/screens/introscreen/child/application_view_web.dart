@@ -1,6 +1,7 @@
 import 'dart:ui_web' as ui;
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:kids_learning_flutter_app/widgets/app_scaffold.dart';
 
 class ApplicationViewHtml extends StatelessWidget {
   final String url;
@@ -27,6 +28,14 @@ class ApplicationViewHtml extends StatelessWidget {
       },
     );
 
-    return HtmlElementView(viewType: viewType);
+    return AppScaffold(
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: HtmlElementView(
+          viewType: viewType,
+        ),
+      ),
+    );
   }
 }

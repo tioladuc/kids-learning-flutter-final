@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../widgets/app_scaffold.dart';
+
 class ApplicationViewHtml extends StatefulWidget {
   final String url;
 
@@ -27,6 +29,14 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(controller: controller);
+    return AppScaffold(
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: WebViewWidget(
+          controller: controller,
+        ),
+      ),
+    );
   }
 }
