@@ -30,11 +30,11 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     emailCtrl = TextEditingController(text: widget.email);
   }
 
-  Future<void> _resetPassword(NotifyData notifyData) async {
+  Future<void> _resetPassword(NotifyData notifyData, BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
 
     if (passwordCtrl.text != confirmCtrl.text) {
-      _showError(translator.getText('ParentResetPasswordPasswordsNotMatch'));
+      _showError(translator.getText('ParentResetPasswordPasswordsNotMatch'), context);
       return;
     }
 
@@ -49,15 +49,15 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     if (!mounted) return;
 
     if (success) {
-      _showSuccess(notifyData);
+      _showSuccess(notifyData, context);
     } else {
       _showError(
-        session.errorMessage ?? translator.getText('ParentResetPasswordError'),
+        session.errorMessage ?? translator.getText('ParentResetPasswordError'), context
       );
     }
   }
 
-  void _showSuccess(NotifyData notifyData) {
+  void _showSuccess(NotifyData notifyData, BuildContext context) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
@@ -81,7 +81,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
     );
   }
 
-  void _showError(String msg) {
+  void _showError(String msg, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
@@ -154,7 +154,7 @@ class _ParentResetPasswordState extends State<ParentResetPassword> {
                 child: ElevatedButton(
                   style: Constant.getTitle3ButtonStyle(),
                   onPressed: () {
-                    session.isLoading ? null : _resetPassword(notifyData);
+                    session.isLoading ? null : _resetPassword(notifyData, context);
                   },
                   child: session.isLoading
                       ? const CircularProgressIndicator()

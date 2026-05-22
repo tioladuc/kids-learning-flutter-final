@@ -107,9 +107,10 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     if (item['url'] != null) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => ApplicationViewHtml(url:item['url'])),
+        MaterialPageRoute(builder: (_) => ApplicationViewHtml(url:item['url'], code:item['key'])),
       );
     }
+
     //Custom navigation for dictation
     if (item['key'] == 'C000') {
       Navigator.push(

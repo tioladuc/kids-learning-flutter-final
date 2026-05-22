@@ -1,4 +1,5 @@
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:kids_learning_flutter_app/providers/session_provider.dart';
 
 import '../core/api_client.dart';
 import '../models/course.dart';
@@ -19,6 +20,19 @@ class CourseProvider extends SessionBase {
   List<Course> pendingCourses = [];
   List<Course> pickCourses = [];
   List<Course> availableCourses = [];
+
+  static Future<void> startWebUrlCourse(String code) async{
+     final response = await ApiClient.post('/course/urlCourseEntering', {
+        "child_id": SessionProvider.child!.id,
+        "course": code,
+      });
+  }
+  static Future<void> endWebUrlCourse(String code) async{
+     final response = await ApiClient.post('/course/urlCourseLeaving', {
+        "child_id": SessionProvider.child!.id,
+        "course": code,
+      });
+  }
 
   Future<bool> loadChildPendingCourses(String childId) async {
     isLoadingPending = true;

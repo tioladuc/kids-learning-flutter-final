@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:kids_learning_flutter_app/providers/course_provider.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -37,6 +38,14 @@ class SessionProvider extends SessionBase {
   static Map<String, String> levels = {};
 
   SessionProvider() {}
+
+  static String getRadom(int taille){
+    const _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    Random _rnd = Random();
+
+    return String.fromCharCodes(Iterable.generate(
+              taille, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
 
   static Future<Map<String, String>> getLevelsFuture() async{
     final response = await ApiClient.post('/account/levels', {
@@ -452,6 +461,7 @@ class SessionProvider extends SessionBase {
     required String login,
     required String password,
     required String email,
+    required String codeParent
   }) async {
     isLoading = true;
     errorMessage = null;
@@ -465,6 +475,7 @@ class SessionProvider extends SessionBase {
         "login": login,
         "password": password,
         "email": email,
+        "codeparent": codeParent,
       });
       //Map<String, dynamic> response = {'success': true,};
 
@@ -528,6 +539,7 @@ class SessionProvider extends SessionBase {
     notifyListeners();
 
     bool statusResponse = false;
+    print('XXXXXXXXXXXXXXXXX DDDDDDDDDDDDDDDDDDD SSSSSSSSSSSSSSSSSSSSS');
     try {
       final response = await ApiClient.post(
         '/account/sendActivationCodeParent',
@@ -549,7 +561,8 @@ class SessionProvider extends SessionBase {
     } finally {
       isLoading = false;
       notifyListeners();
-      return statusResponse;
+      print('dodododododododododdodododododododo');
+      return true;// statusResponse;
     }
   }
 
@@ -577,7 +590,7 @@ class SessionProvider extends SessionBase {
         statusResponse = false;
       }
     } catch (e) {
-      errorMessage = e.toString();
+      errorMessage = '';//e.toString();
     } finally {
       isLoading = false;
       notifyListeners();
@@ -644,7 +657,7 @@ class SessionProvider extends SessionBase {
     bool statusResponse = false;
     try {
       final response = await ApiClient.post('/account/resetParentPassword', {
-        "parent_id": parent!.id,
+        "new_password": newPassword,
         "email": email,
         "code": code,
       });

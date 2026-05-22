@@ -21,6 +21,13 @@ class _AppHeader extends State<AppHeader> with ChangeNotifier {
   Translator translator = Translator();
 
   @override
+  void dispose() {
+    // your cleanup code here
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final session = context.watch<SessionProvider>();
     final notifyData = context.watch<NotifyData>();

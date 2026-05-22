@@ -24,6 +24,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
   final loginCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
   final emailCtrl = TextEditingController();
+  final codeCtrl = TextEditingController( text: SessionProvider.getRadom(6));
 
   Future<void> _submit(NotifyData notifyData) async {
     if (!_formKey.currentState!.validate()) return;
@@ -36,6 +37,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
       login: loginCtrl.text,
       password: passwordCtrl.text,
       email: emailCtrl.text,
+      codeParent: codeCtrl.text,
     );
 
     if (!mounted) return;
@@ -95,6 +97,7 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
     loginCtrl.dispose();
     passwordCtrl.dispose();
     emailCtrl.dispose();
+    codeCtrl.dispose();
     super.dispose();
   }
 
@@ -132,6 +135,11 @@ class _CreateParentAccountState extends State<CreateParentAccount> {
                 notifyData,
                 lastNameCtrl,
                 translator.getText('CreateParentAccountLastName'),
+              ),
+              _field(
+                notifyData,
+                codeCtrl,
+                'Code',
               ),
               _field(
                 notifyData,
