@@ -100,7 +100,9 @@ class ApiClient {
       print('999999999999999999999999999999999999999999999999999999999999999');
       print(res.body);
       print('888888888888888888888888888888888888888888888888888888888888888');
-      return jsonDecode(res.body);
+      final dataResult = jsonDecode(res.body);
+      print('777777777777777777777777777777777777777777777777777777777777777');
+      return dataResult;
     } catch (e) {
       print(e);
     }

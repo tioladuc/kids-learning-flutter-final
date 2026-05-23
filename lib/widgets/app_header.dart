@@ -16,13 +16,13 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(56);
 }
 
-class _AppHeader extends State<AppHeader> with ChangeNotifier {
+class _AppHeader extends State<AppHeader> {
   String currentLanguage = Constant.currentLanguage;
   Translator translator = Translator();
 
   @override
   void dispose() {
-    // your cleanup code here
+    print('disposing AppHeader');
 
     super.dispose();
   }

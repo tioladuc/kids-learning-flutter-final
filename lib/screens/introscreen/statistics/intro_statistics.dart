@@ -31,31 +31,31 @@ class _IntroStatisticsState extends State<IntroStatistics> {
   @override
   void initState() {
     super.initState();
+    print('5555555555556666666666666644444444444777777777777788888888888899999999999999444444444444');
 
     Future.microtask(() async {
-      child = widget.child;/*await context.read<StatisticsProvider>().getBasicInformation(
-        widget.child,
-      );*/
-
+      print('wwwwwwwwwwwwwwwwwwwwweeeeeeeeeeeeeeeeeeeeeeeeetttttttttttttttttttttttttt');
+      child = widget.child;
+      print('00000000000000044444444444444444000000000000000000000000');
+      
       await context.read<StatisticsProvider>().loadStatistics(widget.child);
-      /*await context.read<StatisticsProvider>().loadVisitedCourses(widget.child);
-      await context.read<StatisticsProvider>().loadCompletedCourses(
-        widget.child,
-      );
-      await context.read<StatisticsProvider>().loadNeverDoneCourses(
-        widget.child,
-      );*/
+      print('rrrrrrrrrrrrrrrrrkkkkkkkkkkkkkkkkkkkmmmmmmmmmmmmmmmmmmmm');
+      
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('dddddddddddddddddddddddddddd 01');
     final provider = context.watch<StatisticsProvider>();
+    print('dddddddddddddddddddddddddddd 02');
     final notifyData = context.watch<NotifyData>();
+    print('dddddddddddddddddddddddddddd 03');
     translator = Translator(
       status: StatusLangue.CONSTANCE_STATISTICS,
       lang: notifyData.currentLanguage,
     );
+      print('dddddddddddddddddddddddddddd 04');
 
     return AppScaffold(
       body: provider.isLoading
@@ -100,6 +100,7 @@ class _IntroStatisticsState extends State<IntroStatistics> {
 
   /// HEADER
   Widget _childHeader(NotifyData notifyData) {
+    print('**************+++++++++======== '+ child!.login +' ===========+++++++++++************');
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,

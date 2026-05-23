@@ -211,7 +211,7 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     if (confirm != true) return;
     if (!kIsWeb) { // if it is not web version
       print('before X 01');
-      bool success = await provider.makePaymentStripe(
+      bool success = course.amount==0 ? true : await provider.makePaymentStripe(
         (course.amount * 100).toInt(),
       );
       print('before X 02');

@@ -126,6 +126,7 @@ class StatisticsProvider extends SessionBase {
           }
         }
         neverDoneCourses.clear();
+        visitedCourses.clear();
         for (var c in coursesAll) {
           if(!statistics.any((t)=>t.courseCode==c.code)){
             neverDoneCourses.add(NeverDoneCourse(c, DateTime.now()));

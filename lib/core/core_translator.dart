@@ -60,6 +60,7 @@ class Translator {
   }
 
   String getText(String key) {
+    //print('00000033333333wwwwwwwwwwwwww====== '+ key +' ======wwwwwwwwwww333333333000000');
     return currLang.containsKey(key) ? currLang[key]??'' : defaultLang[key]??'';
   }
 

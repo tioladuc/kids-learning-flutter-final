@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_learning_flutter_app/widgets/app_scaffold.dart';
 
 import '../../../providers/course_provider.dart';
+import '../../../providers/session_provider.dart';
 
 class ApplicationViewHtml extends StatefulWidget {
   final String url;
@@ -21,12 +22,13 @@ class ApplicationViewHtml extends StatefulWidget {
 
 class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
   late final String viewType;
+  BuildContext? contextOther;
 
   @override
   void deactivate() {
     CourseProvider.endWebUrlCourse(widget.code);
     print("Widget deactivated");
-
+    SessionProvider.child!.name += '**deactivate';
     super.deactivate();
   }
 
@@ -36,6 +38,7 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
 
     print('sssssssssssssssss START======= '+widget.code+' ======= dddddddddddddddddddd');
     CourseProvider.startWebUrlCourse(widget.code);
+    SessionProvider.child!.name += '++init';
 
     viewType = 'iframe-${widget.code}-${DateTime.now().millisecondsSinceEpoch}';
 
@@ -56,12 +59,13 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
   @override
   void dispose() {
     CourseProvider.endWebUrlCourse(widget.code);
-    print('sssssssssssssssss END======= '+widget.code+' ======= dddddddddddddddddddd');
+    SessionProvider.child!.name += '==dispose'; // Trigger a rebuild to update the UI
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    contextOther = context;
     return AppScaffold(
       body: SizedBox(
         width: double.infinity,

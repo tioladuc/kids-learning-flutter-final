@@ -62,10 +62,10 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
           "icon": Icons.mic,
           "key": 'C000',
 
-          "url": Null,
-          "description": Null,
-          "amount": Null,
-          "level": Null,
+          "url": null,
+          "description": null,
+          "amount": null,
+          "level": null,
 
         },
         //Menus for statics operations
@@ -74,30 +74,30 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
         "icon": Icons.menu_book,
         "key": 'PickACourse',
 
-          "url": Null,
-          "description": Null,
-          "amount": Null,
-          "level": Null,
+          "url": null,
+          "description": null,
+          "amount": null,
+          "level": null,
       },
       {
         "title": translator.getText('menuCoursesValidationPending'),
         "icon": Icons.hourglass_top,
         "key": 'CourseValidationPending',
 
-          "url": Null,
-          "description": Null,
-          "amount": Null,
-          "level": Null,
+          "url": null,
+          "description": null,
+          "amount": null,
+          "level": null,
       },
       {
         "title": translator.getText('menuStatistics'),
         "icon": Icons.bar_chart,
         "key": 'Statistics',
 
-          "url": Null,
-          "description": Null,
-          "amount": Null,
-          "level": Null,
+          "url": null,
+          "description": null,
+          "amount": null,
+          "level": null,
       },
       {"title": logoutDisplay, "icon": Icons.logout, "key": 'Logout'},
     ];
@@ -138,6 +138,9 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
     }
 
     if (item['key'] == 'Statistics') {
+      print('####################22222222222222222222222###########################');
+      print(SessionProvider.child!);
+      print('####################0000000000000000000000###########################');
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -148,8 +151,14 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
           ),
         ),
       );
+      print('####################111111111111111111111111###########################');
     }
-
+    if(item['key'] == 'testtest'){
+      setState(() {
+        item['title'] = SessionProvider.child!.name + ' (updated)';
+      });
+      return;
+    }
     if (item['key'] == 'Logout') {
       if (SessionProvider.parent == null) {
         Navigator.pushAndRemoveUntil(
@@ -190,7 +199,7 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
 
     courses = courseProvider.availableCourses;
     menuItems = produceMenuItemsFromCoursesNotUrlAndStaticMenus(notifyData.currentLanguage, session);
-
+    print('DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR DUCLAIR ');
     return AppScaffold(
       body: courseProvider.isLoadingAvailable
           ? const Center(child: CircularProgressIndicator())
@@ -200,7 +209,18 @@ class _MainIntroScreenChild extends State<MainIntroScreenChild> {
 
   Widget produceInterface(SessionProvider session) {
     courses = courseProvider.availableCourses;
+    menuItems.add(
+      {
+        "title": SessionProvider.child!.name,
+        "icon": Icons.account_circle,
+        "key": 'testtest',
 
+        "url": null,
+        "description": null,
+        "amount": null,
+        "level": null,
+      },
+    );
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: menuItems.length,
