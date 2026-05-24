@@ -27,6 +27,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
   late TextEditingController _passwordController;
   Translator translator = Translator();
   final Map<String, String> levels = SessionProvider.GetLevel();
+  String currentLevel = '';
 
   late Child _editableChild;
 
@@ -70,7 +71,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
       session.changePasswordParentChild(
         _nameController.text,
         _passwordController.text,
-        _levelController.text,
+        currentLevel,
         _loginController.text,
         widget.child
         
@@ -193,7 +194,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
     print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
     final notifyData = context.watch<NotifyData>();
     final session = context.watch<SessionProvider>();
-    String currentLevel = widget.child.level;
+    currentLevel = widget.child.level;
     print('tttttttttttttttttttttttttttttttttttt');
     print(session);
     print(widget.child.parentResponsible!);
@@ -203,7 +204,10 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
       lang: notifyData.currentLanguage,
     );
     print('7777777777777777777777777777777777777777777777777');
-    _levelController.text = SessionProvider.GetLevel()[widget.child.level]! ;
+    print(widget.child.level);
+    print(SessionProvider.GetLevel());
+    
+    _levelController.text = SessionProvider.GetLevel().containsKey(widget.child.level) ? SessionProvider.GetLevel()[widget.child.level]! : SessionProvider.GetLevel().keys.first;//SessionProvider.GetLevel()[widget.child.level]! ;
     print('55555555555555555555555555555555555555555');
     print(widget.child.id);
     print(SessionProvider.parent!.codeparent);
@@ -341,7 +345,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                     ),
                     onTap: _viewPendingCourses,
                   ),
-                  if (widget.child.parentResponsible!)
+                  /**************if (widget.child.parentResponsible!)
                     ListTile(
                       leading: const Icon(Icons.money_off_csred_outlined),
                       title: Text(
@@ -374,7 +378,7 @@ class _ParentChildScreenState extends State<ParentChildScreen> {
                           );
                         });
                       },
-                    ),
+                    ),***********/
                   const Divider(height: 1),
                   ListTile(
                     leading: const Icon(Icons.bar_chart),

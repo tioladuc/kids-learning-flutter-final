@@ -23,7 +23,7 @@ class En {
   "PendingCoursePaymentConfirmBtn": "Confirm",
 
   "PendingCourseRemovalTitle": "Confirm Removal",
-  "PendingCourseRemovalMsg": "Do you want to remove the course: \${0} ?",
+  "PendingCourseRemovalMsg": "Do you want to remove the course: {0} ?",
 
   "PendingCourseRemovalCancelBtn": "Cancel",
   "PendingCourseRemovalConfirmBtn": "Confirm",

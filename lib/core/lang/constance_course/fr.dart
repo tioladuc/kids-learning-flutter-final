@@ -23,7 +23,7 @@ class Fr {
   "PendingCoursePaymentConfirmBtn": "Confirmer",
 
   "PendingCourseRemovalTitle": "Confirmer Suppression",
-  "PendingCourseRemovalMsg": "Voulez vous supprimer le cours: \${0}",
+  "PendingCourseRemovalMsg": "Voulez vous supprimer le cours: {0}",
 
   "PendingCourseRemovalCancelBtn": "Annuler",
   "PendingCourseRemovalConfirmBtn": "Confirmer",

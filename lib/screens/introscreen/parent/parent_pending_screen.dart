@@ -207,9 +207,10 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
     NotifyData notifyData,
   ) async {
     final confirm = await _showConfirmationDialog(course, notifyData);
+    bool success = course.amount==0;
 
     if (confirm != true) return;
-    if (!kIsWeb) { // if it is not web version
+    if (!kIsWeb && course.amount!=0) { // if it is not web version
       print('before X 01');
       bool success = course.amount==0 ? true : await provider.makePaymentStripe(
         (course.amount * 100).toInt(),
@@ -244,9 +245,30 @@ class _ParentChildPendingScreenState extends State<ParentChildPendingScreen> {
         );
         print('before X 10');
       }
+    } else if(course.amount==0){
+      print('sdsdsdsdsdsdsdsdsdsd 012121212121212121212');
+      success = await provider.payCourse(
+        childId: widget.child.id,
+        courseCode: course.code,
+        amount: course.amount
+      );
+
+
+      if (success) {
+        _showSuccessDialog(notifyData);
+        setState(() {
+          provider.pendingCourses.remove(course);
+        });
+      } else {
+        _showError(
+          provider.errorMessage ??
+              translator.getText('PendingCoursePaymentFailed'),
+        );
+      }
     }
     
   }
+  
 
   Future<void> _handleRemoveCourse(
     Course course,

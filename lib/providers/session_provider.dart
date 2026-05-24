@@ -433,6 +433,10 @@ class SessionProvider extends SessionBase {
         statusResponse = true;
         parent?.children.firstWhere((element) => element.id == child.id).name =
             name;
+        parent?.children.firstWhere((element) => element.id == child.id).level =
+            level;
+        parent?.children.firstWhere((element) => element.id == child.id).login =
+            login;
         parent?.children
                 .firstWhere((element) => element.id == child.id)
                 .password =

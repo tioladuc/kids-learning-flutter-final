@@ -1,7 +1,7 @@
 class Child {
   final String id;
   String name;
-  final String login;
+  String login;
   String level;
   String codeparent;
   String password;
