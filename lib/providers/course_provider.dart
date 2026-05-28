@@ -26,12 +26,26 @@ class CourseProvider extends SessionBase {
         "child_id": SessionProvider.child!.id,
         "course": code,
       });
+
+      if (response['success'] == true) {
+        SessionProvider.child!.name += response['data']['message'];
+      }
+      else{
+        SessionProvider.child!.name += "error";
+      }
   }
   static Future<void> endWebUrlCourse(String code) async{
      final response = await ApiClient.post('/course/urlCourseLeaving', {
         "child_id": SessionProvider.child!.id,
         "course": code,
       });
+
+      if (response['success'] == true) {
+        SessionProvider.child!.name += response['data']['message'];
+      }
+      else{
+        SessionProvider.child!.name += "error";
+      }
   }
 
   Future<bool> loadChildPendingCourses(String childId) async {

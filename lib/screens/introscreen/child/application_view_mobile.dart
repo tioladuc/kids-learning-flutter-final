@@ -25,24 +25,24 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
 
   @override
   void deactivate() {
-    CourseProvider.endWebUrlCourse(widget.code);
+    // CourseProvider.endWebUrlCourse(widget.code);
     print("Widget deactivated");
-    SessionProvider.child!.name += '**deactivate';
+    // SessionProvider.child!.name += '**deactivate';
     super.deactivate();
   }
   
   @override
   void dispose() {
     CourseProvider.endWebUrlCourse(widget.code);    
-    SessionProvider.child!.name += '==dispose'; // Trigger a rebuild to update the UI
+    // SessionProvider.child!.name += '==dispose'; // Trigger a rebuild to update the UI
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    SessionProvider.child!.name += '++init';
-    CourseProvider.endWebUrlCourse(widget.code);
+    // SessionProvider.child!.name += '++init';
+    CourseProvider.startWebUrlCourse(widget.code);
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(widget.url));

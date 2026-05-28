@@ -26,9 +26,9 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
 
   @override
   void deactivate() {
-    CourseProvider.endWebUrlCourse(widget.code);
+    // CourseProvider.endWebUrlCourse(widget.code);
     print("Widget deactivated");
-    SessionProvider.child!.name += '**deactivate';
+    //SessionProvider.child!.name += '**deactivate';
     super.deactivate();
   }
 
@@ -38,7 +38,7 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
 
     print('sssssssssssssssss START======= '+widget.code+' ======= dddddddddddddddddddd');
     CourseProvider.startWebUrlCourse(widget.code);
-    SessionProvider.child!.name += '++init';
+    // SessionProvider.child!.name += '++init';
 
     viewType = 'iframe-${widget.code}-${DateTime.now().millisecondsSinceEpoch}';
 
@@ -59,7 +59,7 @@ class _ApplicationViewHtmlState extends State<ApplicationViewHtml> {
   @override
   void dispose() {
     CourseProvider.endWebUrlCourse(widget.code);
-    SessionProvider.child!.name += '==dispose'; // Trigger a rebuild to update the UI
+    // SessionProvider.child!.name += '==dispose'; // Trigger a rebuild to update the UI
     super.dispose();
   }
 
